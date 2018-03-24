@@ -13,36 +13,23 @@ api_key = "14ac49b5c9e1c8fc43ab267ab462e621"
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth, parser=tweepy.parsers.JSONParser())
-# Create a function that gets the weather in London and Tweets it
-def WeatherTweet():
-
-    # Construct a Query URL for the OpenWeatherMap
-    url = "http://api.openweathermap.org/data/2.5/weather?"
-    city = "London"
-    units = "imperial"
-    query_url = url + "appid=" + api_key + "&q=" + city + "&units=" + units
-
-    # Perform the API call to get the weather
-    weather_response = req.get(query_url)
-    weather_json = weather_response.json()
-    print(weather_json)
-
-    # Twitter credentials
-    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-    auth.set_access_token(access_token, access_token_secret)
-    api = tweepy.API(auth, parser=tweepy.parsers.JSONParser())
-
-    # Tweet the weather
+# Create a function that tweets
+def TweetOut(tweet_number):
     api.update_status(
-        "London Weather as of %s: %s F" %
-        (datetime.datetime.now().strftime("%I:%M %p"),
-         weather_json["main"]["temp"]))
-
-    # Print success message
-    print("Tweeted successfully, sir!")
+        "Can't stop. Won't stop. Chatting! This is Tweet #%s!" %
+        tweet_number)
 
 
-# Set timer to run every 1 hour
+# Create a function that calls the TweetOut function every minute
+counter = 15
+# Infinitely loop
 while(True):
-    WeatherTweet()
-    time.sleep(3600)
+
+    # Call the TweetQuotes function and specify the tweet number
+    TweetOut(counter)
+
+    # Once tweeted, wait 60 seconds before doing anything else
+    time.sleep(60)
+
+    # Add 1 to the counter prior to re-running the loop
+    counter = counter + 1
